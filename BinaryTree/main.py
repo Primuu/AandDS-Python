@@ -91,9 +91,9 @@ assert tree.root.left_child.left_child.value == 1
 assert tree.root.left_child.left_child.is_leaf() is True
 print("Post order:")
 tree.traverse_post_order(print)
-print("Pre order:")
+print("\nPre order:")
 tree.traverse_pre_order(print)
-print("In order:")
+print("\nIn order:")
 tree.traverse_in_order(print)
 
 # Works for BinaryNode
