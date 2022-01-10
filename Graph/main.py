@@ -3,6 +3,7 @@ from typing import Any, Callable
 from typing import Optional
 from typing import Dict, List
 from Queue import Queue
+from graphviz import Digraph
 
 
 class EdgeType(Enum):
@@ -93,52 +94,51 @@ class Graph:
         list_of_keys = [key for key in self.adjacencies.keys()]
         self.dfs(list_of_keys[0], visited_vertex, visit)
 
-    # def show(self):
+    def show(self):
+        filename = "graph"
+        graph = Digraph()
+        visited = []
+        graph_vertices = self.adjacencies.keys()
+        for x in graph_vertices:
+            self.show_support(x, graph, visited)
+        graph.render(filename=filename, directory='E:\\AiSDPythonProjects\\AandDS-Python\\Graph',
+                     view=True, format="jpg")
+
+    def show_support(self, vertex: Vertex, graph, visited: List):
+        if vertex not in visited:
+            graph.node(str(vertex.index), str(vertex.data))
+            visited.append(vertex)
+            for x in self.adjacencies[vertex]:  # x is a vertex neighbour
+                desc = ""
+                if x.weight is not None:
+                    desc += f"{x.weight}"
+                graph.edge(str(x.source.index), str(x.destination.index), label=desc)  # label as a weight
+                if not (x.destination in visited):
+                    self.show_support(x.destination, graph, visited)
 
 
-graph = Graph()
-graph.create_vertex("v0")
-graph.create_vertex("v1")
-graph.create_vertex("v2")
-graph.create_vertex("v3")
-graph.create_vertex("v4")
-graph.create_vertex("v5")
-keys = [key for key in graph.adjacencies.keys()]
-graph.add_directed_edge(keys[0], keys[1])
-graph.add_directed_edge(keys[0], keys[5])
-graph.add_directed_edge(keys[5], keys[1])
-graph.add_directed_edge(keys[5], keys[2])
-graph.add_directed_edge(keys[2], keys[1])
-graph.add_directed_edge(keys[2], keys[3])
-graph.add_directed_edge(keys[3], keys[4])
-graph.add_directed_edge(keys[4], keys[1])
-graph.add_directed_edge(keys[4], keys[5])
+graph_ = Graph()
+graph_.create_vertex("v0")
+graph_.create_vertex("v1")
+graph_.create_vertex("v2")
+graph_.create_vertex("v3")
+graph_.create_vertex("v4")
+graph_.create_vertex("v5")
+keys = [key for key in graph_.adjacencies.keys()]
+graph_.add_directed_edge(keys[0], keys[1])
+graph_.add_directed_edge(keys[0], keys[5])
+graph_.add_directed_edge(keys[5], keys[1])
+graph_.add_directed_edge(keys[5], keys[2])
+graph_.add_directed_edge(keys[2], keys[1])
+graph_.add_directed_edge(keys[2], keys[3])
+graph_.add_directed_edge(keys[3], keys[4])
+graph_.add_directed_edge(keys[4], keys[1])
+graph_.add_directed_edge(keys[4], keys[5])
 
-print(graph)
+print(graph_)
 print("\n")
-graph.traverse_breadth_first(print)
+graph_.traverse_breadth_first(print)
 print("\n")
-graph.traverse_depth_first(print)
+graph_.traverse_depth_first(print)
 
-
-
-# - 0: v0 ----> [1: v1, 5: v5]
-# - 1: v1 ----> [0: v0, 5: v5, 2: v2, 4: v4]
-# - 2: v2 ----> [1: v1, 5: v5, 3: v3]
-# - 3: v3 ----> [4: v4, 2: v2]
-# - 4: v4 ----> [1: v1, 3: v3, 5: v5]
-# - 5: v5 ----> [0: v0, 1: v1, 2: v2, 4: v4]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+graph_.show()
